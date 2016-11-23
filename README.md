@@ -2,7 +2,7 @@
 
 Nice little command-line UI for selecting timezones in Unix systems.
 
-![](https://cldup.com/EDsMvK-PUI.png)
+![](https://cldup.com/ovs0jr1WH2.png)
 
 ## usage
 
