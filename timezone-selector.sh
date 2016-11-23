@@ -1,3 +1,12 @@
+detectTimezone () {
+    if command_exists tzupdate ; then
+        detected=$(tzupdate -p | sed "s/Detected timezone is //" | sed "s/\.//")
+        return
+    fi
+
+    detected=""
+}
+
 tzOptionsByRegion () {
     options=$(cd /usr/share/zoneinfo/$1 && find . | sed "s|^\./||" | sed "s/^\.//" | sed '/^$/d')
 }
@@ -7,6 +16,25 @@ tzRegions () {
 }
 
 tzSelectionMenu () {
+    detectTimezone
+
+    if [[ -n "${detected// }" ]]; then
+        if [ -f "/usr/share/zoneinfo/$detected" ]; then
+           offset=$(TZ="$detected" date +%z | sed "s/00$/:00/g")
+
+           dialog --title "Timezones" \
+                  --backtitle "Happy Hacking Linux" \
+                  --yes-label "Yes, correct" \
+                  --no-label "No, I'll choose it" \
+                  --yesno "Your timezone was detected as $detected ($offset). Is it correct?" 7 50
+           selected=$?
+
+           if [ "$selected" = "0" ]; then
+               tzupdate > /dev/null
+           fi
+        fi
+    fi
+
     tzRegions
     regionsArray=()
     while read name; do
@@ -43,8 +71,11 @@ tzSelectionMenu () {
         tzSelectionMenu
     else
         selected="/usr/share/zoneinfo/$region/$tz"
-        echo "$selected"
     fi
 }
 
-tzSelectionMenu "Happy Hacking Linux"
+command_exists () {
+    type "$1" &> /dev/null ;
+}
+
+tzSelectionMenu
