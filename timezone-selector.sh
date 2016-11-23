@@ -9,8 +9,8 @@ tzRegions () {
 tzSelectionMenu () {
     tzRegions
     regionsArray=()
-    while read i name; do
-        regionsArray+=($i "$name")
+    while read name; do
+        regionsArray+=($name "")
     done <<< "$regions"
 
     region=$(dialog --stdout \
@@ -25,8 +25,9 @@ tzSelectionMenu () {
     tzOptionsByRegion $region
 
     optionsArray=()
-    while read i name; do
-        optionsArray+=($i "$name")
+    while read name; do
+        offset=$(TZ="$region/$name" date +%z | sed "s/00$/:00/g")
+        optionsArray+=($name "($offset)")
     done <<< "$options"
 
     tz=$(dialog --stdout \
@@ -41,7 +42,8 @@ tzSelectionMenu () {
     if [[ -z "${tz// }" ]]; then
         tzSelectionMenu
     else
-        $selected="/usr/share/zoneinfo/$region/$tz"
+        selected="/usr/share/zoneinfo/$region/$tz"
+        echo "$selected"
     fi
 }
 
