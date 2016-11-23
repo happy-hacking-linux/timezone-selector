@@ -1,6 +1,6 @@
 detectTimezone () {
     if command_exists tzupdate ; then
-        detected=$(tzupdate -p | sed "s/Detected timezone is //" | sed "s/\.//")
+        dialog --infobox "Please wait, detecting your timezone... " 5 50; detected=$(tzupdate -p | sed "s/Detected timezone is //" | sed "s/\.//")
         return
     fi
 
@@ -77,5 +77,3 @@ tzSelectionMenu () {
 command_exists () {
     type "$1" &> /dev/null ;
 }
-
-tzSelectionMenu
