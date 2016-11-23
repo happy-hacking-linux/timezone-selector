@@ -1,8 +1,9 @@
 ## timezone-selector
 
-Nice little command-line UI for selecting timezones in Unix systems.
+Nice little command-line UI for selecting timezones in Unix systems. It can detect your timezone, ask you if it's correct and let you set it up manually if you want. 
 
-![](https://cldup.com/ovs0jr1WH2.png)
+![](https://cldup.com/UohFGbGI34.png)
+![](https://cldup.com/-Ud-Q7SNs5.png)
 
 ## usage
 
